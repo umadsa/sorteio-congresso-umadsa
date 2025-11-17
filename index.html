@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteio de Prêmios</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        /* Card Principal */
+        .card-container {
+            max-width: 500px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 0;
+        }
+
+        /* Placeholder da Logo - AGORA COM IMAGEM e NOVA COR DE FUNDO */
+        .logo-placeholder {
+            background-color: #ab7a37; /* Cor sólida para a seção da logo */
+            padding: 2.5rem; /* Ajuste o padding conforme sua logo */
+            text-align: center;
+        }
+        .logo-placeholder img {
+            max-width: 250px; /* Ajuste o tamanho máximo da sua logo */
+            height: auto;
+            display: block; /* Garante que a imagem é um bloco para centralizar */
+            margin: 0 auto; /* Centraliza a imagem */
+        }
+
+        .form-body {
+            padding: 2rem;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(171, 122, 55, 0.25); /* Sombra com a nova cor */
+            border-color: #ab7a37; /* Borda com a nova cor */
+        }
+        .form-check-input:checked {
+            background-color: #ab7a37; /* Checkbox com a nova cor */
+            border-color: #ab7a37; /* Borda do Checkbox com a nova cor */
+        }
+        .form-check-label {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .btn-submit {
+            background: #ab7a37; /* Botão de Envio com a nova cor */
+            border: 0;
+            border-radius: 50rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        /* Etapa 2: Ticket de Sorteio */
+        #ticket-container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* O TICKET VISUAL - O que será baixado */
+        #ticket-visual {
+            background-color: #f9f9f9;
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        #ticket-visual h4 {
+            font-size: 1rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #ticket-visual h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #ab7a37; /* Número do sorteio com a nova cor */
+            margin: 0;
+        }
+
+        .btn-download {
+            border-radius: 50rem;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            background-color: #ab7a37;
+            border-color: #ab7a37;
+            color: white; /* Adicionado para garantir o contraste */
+        }
+        .btn-download:hover {
+             background-color: #926530; /* Um tom ligeiramente mais escuro ao passar o mouse */
+             border-color: #926530;
+             color: white; /* Adicionado para garantir o contraste */
+        }
+        .btn-outline-secondary {
+            color: #ab7a37;
+            border-color: #ab7a37;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #ab7a37;
+            color: white;
+            border-color: #ab7a37;
+        }
+
+        /* Link de Recuperação e links gerais */
+        .recovery-link {
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        a {
+            color: #ab7a37; /* Cor do link */
+            text-decoration: none;
+        }
+        a:hover {
+            color: #926530; /* Cor do link ao passar o mouse */
+            text-decoration: underline;
+        }
+        .alert-primary {
+            background-color: #ab7a37;
+            border-color: #ab7a37;
+            color: #fff;
+        }
+        .text-primary {
+            color: #ab7a37 !important;
+        }
+
+        /* Modal de Termos e Recuperação */
+        .modal-header {
+             border-bottom: 0;
+        }
+        .modal-footer {
+            border-top: 0;
+        }
+        .btn-primary { /* Botões primários (ex: modal) */
+            background-color: #ab7a37;
+            border-color: #ab7a37;
+        }
+        .btn-primary:hover {
+            background-color: #926530;
+            border-color: #926530;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="card-container">
+        <div class="logo-placeholder">
+            <img src="https://imgur.com/iN6o0TW.png" alt="Logo da Sua Empresa">
+        </div>
+
+        <div id="form-container">
+            <div class="form-body">
+                <h3 class="fw-bold mb-3">Participe e Concorra!</h3>
+                <p class="text-muted mb-4">Preencha seus dados, gere seu número e boa sorte!</p>
+
+                <form id="sorteio-form">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="nome" class="form-label">Nome<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nome" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="sobrenome" class="form-label">Sobrenome<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="sobrenome" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="telefone" class="form-label">WhatsApp (com DDD)<span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="telefone" placeholder="(11) 90000-0000" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email (Opcional)</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enviaremos seu número aqui">
+                        </div>
+                    </div>
+
+                    <div class="form-check mt-4">
+                        <input class="form-check-input" type="checkbox" id="consentimento" required>
+                        <label class="form-check-label" for="consentimento">
+                            Li e concordo com os <a href="#" data-bs-toggle="modal" data-bs-target="#termosModal">termos do sorteio</a> e autorizo o uso dos meus dados para esta finalidade e contato dos parceiros.
+                        </label>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-submit" id="btn-submit">
+                            <span id="btn-text">GERAR MEU NÚMERO</span>
+                            <span id="btn-spinner" class="spinner-border spinner-border-sm" style="display: none;" role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <div id="form-error" class="alert alert-danger mt-3" style="display: none;"></div>
+                </form>
+            </div>
+            
+            <div class="recovery-link pb-4">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#recuperarModal">Esqueceu seu número?</a>
+            </div>
+        </div>
+
+        <div id="ticket-container" style="display: none;">
+            <h3 class="fw-bold">Parabéns, <span id="nome-sorteado"></span>!</h3>
+            <p class="text-muted">Seu número foi gerado com sucesso!</p>
+
+            <div id="ticket-visual">
+                <h4>Seu Número da Sorte</h4>
+                <h1 id="codigo-gerado">S-000000</h1>
+            </div>
+
+            <p class="fw-bold text-danger">Guarde este código! Este é o seu número da sorte.</p>
+            
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary btn-download" id="btn-download">
+                    <i class="material-icons align-middle me-1" style="font-size: 1.2rem;">download</i>
+                    Baixar Imagem do Número
+                </button>
+                <button class="btn btn-outline-secondary btn-download" id="btn-reenviar-email" style="display: none;">
+                    <i class="material-icons align-middle me-1" style="font-size: 1.2rem;">email</i>
+                    Enviar para o meu e-mail
+                </button>
+            </div>
+            <div id="email-status" class="form-text mt-2"></div>
+        </div>
+    </main>
+
+
+    <div class="modal fade" id="termosModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Regras e Termos do Sorteio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Ao se inscrever, você concorda com as seguintes regras:</p>
+                    <ul>
+                        <li><strong>Elegibilidade:</strong> Apenas um número da sorte será gerado por número de WhatsApp cadastrado.</li>
+                        <li><strong>Sorteios Diários:</strong> Os números gerados concorrem em todos os dias de sorteio (ex: 21/11, 22/11), caso não sejam sorteados.</li>
+                        <li><strong>Exclusão de Ganhadores:</strong> Números sorteados não concorrem nos sorteios subsequentes. Se ganhar no dia 21/11, você não concorrerá no dia 22/11.</li>
+                        <li><strong>Presença Obrigatória:</strong> É necessário estar presente no local do evento para retirar o prêmio no momento do sorteio.</li>
+                        <li><strong>Uso de Dados:</strong> Você autoriza o uso dos seus dados (Nome, Telefone) para a realização do sorteio e para que os parceiros do evento possam entrar em contato com oportunidades e ofertas.</li>
+                    </ul>
+                    <hr>
+                    <p class="fw-bold">Observação Importante:</p>
+                    <p>Caso o número sorteado pertença a uma pessoa ausente, um novo número será sorteado imediatamente. O sorteado ausente perderá o direito ao prêmio e a elegibilidade para concorrer nos próximos dias.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendi e Concordo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="recuperarModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recuperar Meu Número</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Preencha os dados EXATAMENTE como no cadastro para reenviarmos seu número ao seu e-mail.</p>
+                    <form id="recuperar-form">
+                        <div class="mb-3">
+                            <label for="rec-nome" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="rec-nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rec-sobrenome" class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control" id="rec-sobrenome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rec-telefone" class="form-label">WhatsApp</label>
+                            <input type="tel" class="form-control" id="rec-telefone" placeholder="(11) 90000-0000" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rec-email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="rec-email" required>
+                        </div>
+                        <div id="recuperar-status" class="mt-3"></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btn-recuperar">Recuperar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- LÓGICA DO FORMULÁRIO (MODELO API) ---
+
+        // ==========================================================
+        // IMPORTANTE: Cole a URL da sua API (a nova URL .../exec) aqui
+        const API_URL = "https://script.google.com/macros/s/AKfycbyc3rAieJvd-FSXFWbbXuFWl-WCFI6Vufvt4obJk-pOZcfLaI9udy0b4kH1ucraZzM3OQ/exec  "; 
+        // ==========================================================
+
+        // Elementos do DOM
+        const form = document.getElementById('sorteio-form');
+        const btnSubmit = document.getElementById('btn-submit');
+        const btnText = document.getElementById('btn-text');
+        const btnSpinner = document.getElementById('btn-spinner');
+        const formError = document.getElementById('form-error');
+        const formContainer = document.getElementById('form-container');
+        const ticketContainer = document.getElementById('ticket-container');
+        const nomeSorteado = document.getElementById('nome-sorteado');
+        const codigoGerado = document.getElementById('codigo-gerado');
+        const btnDownload = document.getElementById('btn-download');
+        const btnReenviarEmail = document.getElementById('btn-reenviar-email');
+        const emailStatus = document.getElementById('email-status');
+        let formData = {}; // Variável para guardar os dados do form
+
+        // 1. Máscara de Telefone (simples)
+        const telefoneInput = document.getElementById('telefone');
+        telefoneInput.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, ''); v = v.substring(0, 11);
+            if (v.length > 10) { v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3'); }
+            else if (v.length > 6) { v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3'); }
+            else if (v.length > 2) { v = v.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2'); }
+            else if (v.length > 0) { v = v.replace(/^(\d{0,2}).*/, '($1'); }
+            e.target.value = v;
+        });
+        const recTelefoneInput = document.getElementById('rec-telefone');
+        recTelefoneInput.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, ''); v = v.substring(0, 11);
+            if (v.length > 10) { v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3'); }
+            else if (v.length > 6) { v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3'); }
+            else if (v.length > 2) { v = v.replace(/^(\d{2})(\d{0,5}).*/, '($1) $2'); }
+            else if (v.length > 0) { v = v.replace(/^(\d{0,2}).*/, '($1'); }
+            e.target.value = v;
+        });
+
+        // 2. Envio do Formulário (AGORA USA 'fetch')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            formData = {
+                nome: document.getElementById('nome').value,
+                sobrenome: document.getElementById('sobrenome').value,
+                telefone: document.getElementById('telefone').value,
+                email: document.getElementById('email').value,
+                consentimento: document.getElementById('consentimento').checked ? "Sim" : "Nao"
+            };
+
+            // Validação Client-side
+            if (!formData.nome || !formData.sobrenome || !formData.telefone) {
+                showError("Nome, Sobrenome e WhatsApp são obrigatórios.");
+                return;
+            }
+            if (formData.telefone.replace(/\D/g, '').length < 10) {
+                showError("Telefone parece estar incompleto.");
+                return;
+            }
+             if (formData.consentimento !== "Sim") {
+                showError("Você precisa aceitar os termos para participar.");
+                return;
+            }
+
+            setLoading(true);
+
+            // Substitui google.script.run por fetch()
+            // Apps Script doPost prefere 'text/plain' como Content-Type ao invés de 'application/json'
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'cors', // Habilita o CORS
+                body: JSON.stringify({
+                    action: 'inscrever', // Nossa ação para o doPost
+                    data: formData       // Nossos dados do formulário
+                }),
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8' 
+                }
+            })
+            .then(response => response.json())
+            .then(response => {
+                onFormSuccess(response); // A função de sucesso original
+            })
+            .catch(error => {
+                onFormFailure(error); // A função de falha original
+            });
+        });
+
+        // 3. Handlers de Sucesso e Falha
+        function onFormSuccess(response) {
+            setLoading(false);
+            if (response.success) {
+                nomeSorteado.innerText = response.nome;
+                codigoGerado.innerText = response.codigo;
+                if (formData.email) {
+                    btnReenviarEmail.style.display = 'block';
+                    emailStatus.innerText = `Enviamos uma cópia para ${formData.email}.`;
+                    emailStatus.className = 'form-text mt-2 text-success';
+                }
+                formContainer.style.display = 'none';
+                ticketContainer.style.display = 'block';
+            } else {
+                showError(response.message);
+            }
+        }
+        function onFormFailure(error) {
+            setLoading(false);
+            showError("Erro de comunicação com o servidor. Tente novamente.");
+            console.error(error); // Loga o erro no console para debug
+        }
+
+        // 4. Download da Imagem do Ticket (não muda)
+        btnDownload.addEventListener('click', () => {
+            const ticketElement = document.getElementById('ticket-visual');
+            const codigo = codigoGerado.innerText;
+
+            html2canvas(ticketElement, { 
+                scale: 2,
+                backgroundColor: null,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Meu-Numero-Sorte-${codigo}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+        
+        // 5. Botão de Reenviar Email (Usa a mesma lógica do 'recuperar')
+        btnReenviarEmail.addEventListener('click', (e) => {
+            e.target.disabled = true;
+            emailStatus.innerText = "Reenviando...";
+            emailStatus.className = 'form-text mt-2 text-muted';
+            
+            // Reutiliza o formData que já temos
+            const dadosReenvio = {
+                nome: formData.nome,
+                sobrenome: formData.sobrenome,
+                telefone: formData.telefone,
+                email: formData.email // O e-mail que o usuário digitou
+            };
+
+            // Chama a ação 'recuperar' (que também envia o e-mail)
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({
+                    action: 'recuperar', 
+                    data: dadosReenvio
+                }),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            })
+            .then(response => response.json())
+            .then(response => {
+                e.target.disabled = false;
+                if(response.success){
+                    emailStatus.innerText = `E-mail reenviado para ${formData.email}!`;
+                    emailStatus.className = 'form-text mt-2 text-success';
+                } else {
+                    emailStatus.innerText = "Erro ao reenviar.";
+                    emailStatus.className = 'form-text mt-2 text-danger';
+                }
+            })
+            .catch(err => {
+                e.target.disabled = false;
+                emailStatus.innerText = "Erro de comunicação.";
+                emailStatus.className = 'form-text mt-2 text-danger';
+            });
+        });
+
+        // 6. Lógica do Modal de Recuperação (AGORA USA 'fetch')
+        const btnRecuperar = document.getElementById('btn-recuperar');
+        const recuperarStatus = document.getElementById('recuperar-status');
+        
+        btnRecuperar.addEventListener('click', () => {
+            const dadosRecuperacao = {
+                nome: document.getElementById('rec-nome').value,
+                sobrenome: document.getElementById('rec-sobrenome').value,
+                telefone: document.getElementById('rec-telefone').value,
+                email: document.getElementById('rec-email').value
+            };
+            
+            btnRecuperar.disabled = true;
+            recuperarStatus.className = 'alert alert-info';
+            recuperarStatus.innerText = "Buscando...";
+
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({
+                    action: 'recuperar',
+                    data: dadosRecuperacao
+                }),
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                }
+            })
+            .then(response => response.json())
+            .then((response) => {
+                btnRecuperar.disabled = false;
+                if (response.success) {
+                    recuperarStatus.className = 'alert alert-success';
+                    recuperarStatus.innerText = response.message;
+                } else {
+                    recuperarStatus.className = 'alert alert-danger';
+                    recuperarStatus.innerText = response.message;
+                }
+            })
+            .catch((err) => {
+                btnRecuperar.disabled = false;
+                recuperarStatus.className = 'alert alert-danger';
+                recuperarStatus.innerText = "Erro de comunicação.";
+            });
+        });
+
+
+        // Funções Utilitárias de UI (não mudam)
+        function setLoading(isLoading) {
+            if (isLoading) {
+                btnSpinner.style.display = 'inline-block';
+                btnText.style.display = 'none';
+                btnSubmit.disabled = true;
+                formError.style.display = 'none';
+            } else {
+                btnSpinner.style.display = 'none';
+                btnText.style.display = 'inline';
+                btnSubmit.disabled = false;
+            }
+        }
+
+        function showError(message) {
+            formError.innerText = message;
+            formError.style.display = 'block';
+        }
+
+    </script>
+</body>
+</html>
