@@ -23,8 +23,6 @@
             min-height: 100vh;
             padding: 1.5rem;
         }
-
-        /* Card Principal */
         .card-container {
             max-width: 500px;
             width: 100%;
@@ -34,60 +32,38 @@
             overflow: hidden;
             border: 0;
         }
-
-        /* Placeholder da Logo - AGORA COM IMAGEM e NOVA COR DE FUNDO */
         .logo-placeholder {
-            background-color: #ab7a37; /* Cor sólida para a seção da logo */
-            padding: 2.5rem; /* Ajuste o padding conforme sua logo */
+            background-color: #ab7a37;
+            padding: 2.5rem; 
             text-align: center;
         }
         .logo-placeholder img {
-            max-width: 250px; /* Ajuste o tamanho máximo da sua logo */
+            max-width: 250px; 
             height: auto;
-            display: block; /* Garante que a imagem é um bloco para centralizar */
-            margin: 0 auto; /* Centraliza a imagem */
+            display: block; 
+            margin: 0 auto; 
         }
-
-        .form-body {
-            padding: 2rem;
-        }
-        
-        .form-control {
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-        }
+        .form-body { padding: 2rem; }
+        .form-control { border-radius: 8px; padding: 0.75rem 1rem; }
         .form-control:focus {
-            box-shadow: 0 0 0 3px rgba(171, 122, 55, 0.25); /* Sombra com a nova cor */
-            border-color: #ab7a37; /* Borda com a nova cor */
+            box-shadow: 0 0 0 3px rgba(171, 122, 55, 0.25);
+            border-color: #ab7a37;
         }
         .form-check-input:checked {
-            background-color: #ab7a37; /* Checkbox com a nova cor */
-            border-color: #ab7a37; /* Borda do Checkbox com a nova cor */
+            background-color: #ab7a37;
+            border-color: #ab7a37;
         }
-        .form-check-label {
-            font-size: 0.9rem;
-            color: #555;
-        }
-
+        .form-check-label { font-size: 0.9rem; color: #555; }
         .btn-submit {
-            background: #ab7a37; /* Botão de Envio com a nova cor */
+            background: #ab7a37;
             border: 0;
             border-radius: 50rem;
             padding: 0.75rem 1.5rem;
             font-weight: 600;
             transition: opacity 0.3s ease;
         }
-        .btn-submit:hover {
-            opacity: 0.9;
-        }
-
-        /* Etapa 2: Ticket de Sorteio */
-        #ticket-container {
-            text-align: center;
-            padding: 2rem;
-        }
-
-        /* O TICKET VISUAL - O que será baixado */
+        .btn-submit:hover { opacity: 0.9; }
+        #ticket-container { text-align: center; padding: 2rem; }
         #ticket-visual {
             background-color: #f9f9f9;
             border: 2px dashed #ddd;
@@ -104,71 +80,37 @@
         #ticket-visual h1 {
             font-size: 3.5rem;
             font-weight: 700;
-            color: #ab7a37; /* Número do sorteio com a nova cor */
+            color: #ab7a37;
             margin: 0;
         }
-
         .btn-download {
             border-radius: 50rem;
             padding: 0.75rem 1.5rem;
             font-weight: 600;
             background-color: #ab7a37;
             border-color: #ab7a37;
-            color: white; /* Adicionado para garantir o contraste */
+            color: white;
         }
         .btn-download:hover {
-             background-color: #926530; /* Um tom ligeiramente mais escuro ao passar o mouse */
+             background-color: #926530;
              border-color: #926530;
-             color: white; /* Adicionado para garantir o contraste */
+             color: white;
         }
-        .btn-outline-secondary {
-            color: #ab7a37;
-            border-color: #ab7a37;
-        }
+        .btn-outline-secondary { color: #ab7a37; border-color: #ab7a37; }
         .btn-outline-secondary:hover {
             background-color: #ab7a37;
             color: white;
             border-color: #ab7a37;
         }
-
-        /* Link de Recuperação e links gerais */
-        .recovery-link {
-            font-size: 0.9rem;
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-        a {
-            color: #ab7a37; /* Cor do link */
-            text-decoration: none;
-        }
-        a:hover {
-            color: #926530; /* Cor do link ao passar o mouse */
-            text-decoration: underline;
-        }
-        .alert-primary {
-            background-color: #ab7a37;
-            border-color: #ab7a37;
-            color: #fff;
-        }
-        .text-primary {
-            color: #ab7a37 !important;
-        }
-
-        /* Modal de Termos e Recuperação */
-        .modal-header {
-             border-bottom: 0;
-        }
-        .modal-footer {
-            border-top: 0;
-        }
-        .btn-primary { /* Botões primários (ex: modal) */
-            background-color: #ab7a37;
-            border-color: #ab7a37;
-        }
-        .btn-primary:hover {
-            background-color: #926530;
-            border-color: #926530;
-        }
+        .recovery-link { font-size: 0.9rem; margin-top: 1.5rem; text-align: center; }
+        a { color: #ab7a37; text-decoration: none; }
+        a:hover { color: #926530; text-decoration: underline; }
+        .alert-primary { background-color: #ab7a37; border-color: #ab7a37; color: #fff; }
+        .text-primary { color: #ab7a37 !important; }
+        .modal-header { border-bottom: 0; }
+        .modal-footer { border-top: 0; }
+        .btn-primary { background-color: #ab7a37; border-color: #ab7a37; }
+        .btn-primary:hover { background-color: #926530; border-color: #926530; }
     </style>
 </head>
 <body>
@@ -362,7 +304,7 @@
             e.target.value = v;
         });
 
-        // 2. Envio do Formulário (AGORA USA 'fetch')
+        // 2. Envio do Formulário (AGORA USA 'fetch' SIMPLES)
         form.addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -389,26 +331,22 @@
             }
 
             setLoading(true);
-
-            // Substitui google.script.run por fetch()
-            // Apps Script doPost prefere 'text/plain' como Content-Type ao invés de 'application/json'
+            
+            // fetch() SIMPLES: Sem 'mode: cors' e sem 'headers'
+            // Isso evita o erro de Preflight (OPTIONS)
             fetch(API_URL, {
                 method: 'POST',
-                mode: 'cors', // Habilita o CORS
                 body: JSON.stringify({
-                    action: 'inscrever', // Nossa ação para o doPost
-                    data: formData       // Nossos dados do formulário
-                }),
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8' 
-                }
+                    action: 'inscrever',
+                    data: formData
+                })
             })
             .then(response => response.json())
             .then(response => {
-                onFormSuccess(response); // A função de sucesso original
+                onFormSuccess(response);
             })
             .catch(error => {
-                onFormFailure(error); // A função de falha original
+                onFormFailure(error);
             });
         });
 
@@ -432,7 +370,7 @@
         function onFormFailure(error) {
             setLoading(false);
             showError("Erro de comunicação com o servidor. Tente novamente.");
-            console.error(error); // Loga o erro no console para debug
+            console.error(error);
         }
 
         // 4. Download da Imagem do Ticket (não muda)
@@ -452,29 +390,25 @@
             });
         });
         
-        // 5. Botão de Reenviar Email (Usa a mesma lógica do 'recuperar')
+        // 5. Botão de Reenviar Email (Usa a mesma lógica 'fetch' SIMPLES)
         btnReenviarEmail.addEventListener('click', (e) => {
             e.target.disabled = true;
             emailStatus.innerText = "Reenviando...";
             emailStatus.className = 'form-text mt-2 text-muted';
             
-            // Reutiliza o formData que já temos
             const dadosReenvio = {
                 nome: formData.nome,
                 sobrenome: formData.sobrenome,
                 telefone: formData.telefone,
-                email: formData.email // O e-mail que o usuário digitou
+                email: formData.email
             };
 
-            // Chama a ação 'recuperar' (que também envia o e-mail)
             fetch(API_URL, {
                 method: 'POST',
-                mode: 'cors',
                 body: JSON.stringify({
                     action: 'recuperar', 
                     data: dadosReenvio
-                }),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                })
             })
             .then(response => response.json())
             .then(response => {
@@ -494,7 +428,7 @@
             });
         });
 
-        // 6. Lógica do Modal de Recuperação (AGORA USA 'fetch')
+        // 6. Lógica do Modal de Recuperação (AGORA USA 'fetch' SIMPLES)
         const btnRecuperar = document.getElementById('btn-recuperar');
         const recuperarStatus = document.getElementById('recuperar-status');
         
@@ -512,14 +446,10 @@
 
             fetch(API_URL, {
                 method: 'POST',
-                mode: 'cors',
                 body: JSON.stringify({
                     action: 'recuperar',
                     data: dadosRecuperacao
-                }),
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8'
-                }
+                })
             })
             .then(response => response.json())
             .then((response) => {
