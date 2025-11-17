@@ -181,7 +181,7 @@
 
             // 4. Define o que fazer em caso de falha (ex: API_URL errada, API offline)
             script.onerror = () => {
-                onDataFailure({ message: "Não foi possível carregar os dados. Verifique a API_URL e o CORS no script." });
+                onDataFailure({ message: "Não foi possível carregar os dados. Verifique a API_URL." });
             };
 
             // 5. Adiciona o script à página (isso faz a "chamada" da API)
